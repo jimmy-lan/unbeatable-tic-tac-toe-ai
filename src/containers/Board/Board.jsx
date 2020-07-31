@@ -1,5 +1,5 @@
 import React from "react";
-import { BoardCell } from "../components/BoardCell";
+import { BoardCell } from "../../components/BoardCell";
 import { Grid, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
