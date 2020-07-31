@@ -101,4 +101,16 @@ export class Board {
     this.state[index] = mark;
     return true;
   }
+
+  /**
+   * Return a list of indices corresponding to
+   * empty cells.
+   */
+  getEmptyCells() {
+    const cells = [];
+    this.state.forEach((cell, index) => {
+      if (!cell) cells.push(index);
+    });
+    return cells;
+  }
 }
