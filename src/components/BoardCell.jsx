@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Grid, makeStyles } from "@material-ui/core";
 import { Close as CloseIcon } from "@material-ui/icons";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -28,12 +29,13 @@ const useStyles = makeStyles((theme) => ({
 export const BoardCell = (props) => {
   const classes = useStyles();
 
-  const { mark } = props;
+  const { cellIndex, handleClick } = props;
+  const mark = useSelector((state) => state.game.board[cellIndex]);
 
   const renderMark = () => {
-    if (mark === "circle") {
+    if (mark === "o") {
       return <span className={classes.circle} />;
-    } else if (mark === "cross") {
+    } else if (mark === "x") {
       return <CloseIcon className={classes.close} />;
     }
     return <></>;
@@ -41,7 +43,11 @@ export const BoardCell = (props) => {
 
   return (
     <Grid item xs={4} {...props}>
-      <Button className={classes.button} disableElevation>
+      <Button
+        className={classes.button}
+        onClick={() => handleClick(cellIndex)}
+        disableElevation
+      >
         {renderMark()}
       </Button>
     </Grid>
