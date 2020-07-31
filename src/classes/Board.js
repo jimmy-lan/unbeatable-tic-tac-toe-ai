@@ -88,4 +88,17 @@ export class Board {
 
     return false;
   }
+
+  /**
+   * Place a mark on cell index
+   * @param {string} mark the mark to be placed. "x" | "o"
+   * @param {number} index the index of cell to place this mark
+   */
+  placeMark(mark, index) {
+    if (index >= 9 || this.state[index]) {
+      return false;
+    }
+    this.state[index] = mark;
+    return true;
+  }
 }
