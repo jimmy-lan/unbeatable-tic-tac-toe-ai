@@ -113,4 +113,22 @@ export class Board {
     });
     return cells;
   }
+
+  /**
+   * Return a string representation of the board
+   */
+  toString() {
+    let output = "";
+    this.state.forEach((mark, index) => {
+      output += mark ? ` ${mark} |` : "    |";
+      if ((index + 1) % 3 === 0) {
+        output = output.slice(0, -1);
+        if (index < 8) {
+          output +=
+            "\n \u2015\u2015\u2015 \u2015\u2015\u2015 \u2015\u2015\u2015 \n";
+        }
+      }
+    });
+    return output;
+  }
 }
