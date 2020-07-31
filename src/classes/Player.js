@@ -3,6 +3,11 @@ import { Board } from "./Board";
 export class Player {
   constructor(maxDepth = -1) {
     this.maxDepth = maxDepth;
+    /**
+     * Map where key is some optimal score and value is an array of
+     * moves that will result in the optimal score assuming all players
+     * play rationally.
+     */
     this.nodesMap = new Map();
   }
 
@@ -25,39 +30,44 @@ export class Player {
       return 0;
     }
 
-    if (isMaximizing) {
-      /** Best value that can be obtained through the move */
-      let bestValue = -100;
+    /** Best value that can be obtained through all moves */
+    let bestValue = isMaximizing ? -100 : 100;
+    const currentMark = isMaximizing ? "x" : "o";
 
-      board.getEmptyCells().forEach((cellIndex) => {
-        // child board to compute score of this move
-        let childBoard = new Board(board.state.slice());
+    board.getEmptyCells().forEach((cellIndex) => {
+      // child board to compute score of this move
+      let childBoard = new Board(board.state.slice());
 
-        // compute optimal value of this move and update bestValue
-        childBoard.placeMark("x", cellIndex);
-        let childBestValue = this.getBestMove(childBoard, false, depth + 1);
+      // compute optimal value of this move and update bestValue
+      childBoard.placeMark(currentMark, cellIndex);
+      let childBestValue = this.getBestMove(
+        childBoard,
+        !isMaximizing,
+        depth + 1
+      );
+      if (isMaximizing) {
         bestValue = Math.max(bestValue, childBestValue);
-
-        if (depth === 0) {
-          let moves = this.nodesMap.has(childBestValue)
-            ? this.nodesMap.get(childBestValue).concat([cellIndex])
-            : [cellIndex];
-          this.nodesMap.set(childBestValue, moves);
-        }
-      });
-
-      if (depth === 0) {
-        const bestMoves = this.nodesMap.get(bestValue);
-        // we select the first best move
-        // note that when we have multiple best moves, we can select any one
-        // of them
-        let move = bestMoves[0];
-        return new Promise((resolve) => {
-          resolve(move);
-        });
+      } else {
+        bestValue = Math.min(bestValue, childBestValue);
       }
 
-      return bestValue;
+      if (depth === 0) {
+        let moves = this.nodesMap.has(childBestValue)
+          ? this.nodesMap.get(childBestValue).concat([cellIndex])
+          : [cellIndex];
+        this.nodesMap.set(childBestValue, moves);
+      }
+    });
+
+    if (depth === 0) {
+      const bestMoves = this.nodesMap.get(bestValue);
+      // we select the first best move
+      // note that when we have multiple best moves, we can select any one
+      // of them
+      let move = bestMoves[0];
+      return move;
     }
+
+    return bestValue;
   }
 }
