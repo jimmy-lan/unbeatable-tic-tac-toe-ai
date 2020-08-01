@@ -9,6 +9,7 @@ const gameSlice = createSlice({
     currentMark: "x",
     canPlay: true,
     highlightNodes: [],
+    gameComplete: false,
   },
   reducers: {
     placeMark(state, action) {
@@ -18,13 +19,19 @@ const gameSlice = createSlice({
       }
       state.board[index] = state.currentMark;
       state.currentMark = state.currentMark === "x" ? "o" : "x";
+      state.canPlay = false;
 
       // calculate highlight nodes
       const currentBoard = new Board(state.board);
       const terminal = currentBoard.isTerminal();
       if (terminal) {
-        state.highlightNodes = terminal.highlight;
+        if (terminal.winner === "draw") {
+          state.highlightNodes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        } else {
+          state.highlightNodes = terminal.highlight;
+        }
         state.canPlay = false;
+        state.gameComplete = true;
       }
     },
     aiMove(state) {
@@ -37,22 +44,35 @@ const gameSlice = createSlice({
       }
       state.board[aiPlayerMove] = state.currentMark;
       state.currentMark = state.currentMark === "x" ? "o" : "x";
+      state.canPlay = true;
 
       // calculate highlight nodes
       const currentBoard = new Board(state.board);
       const terminal = currentBoard.isTerminal();
       if (terminal) {
-        state.highlightNodes = terminal.highlight;
+        if (terminal.winner === "draw") {
+          state.highlightNodes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        } else {
+          state.highlightNodes = terminal.highlight;
+        }
         state.canPlay = false;
+        state.gameComplete = true;
       }
     },
     setCanPlay(state, action) {
       state.canPlay = action.payload;
+    },
+    resetBoard(state) {
+      state.board = new Array(9).fill("");
+      state.currentMark = "x";
+      state.canPlay = true;
+      state.gameComplete = false;
+      state.highlightNodes = [];
     },
   },
 });
 
 const { actions, reducer } = gameSlice;
 
-export const { placeMark, aiMove, setCanPlay } = actions;
+export const { placeMark, aiMove, setCanPlay, resetBoard } = actions;
 export default reducer;

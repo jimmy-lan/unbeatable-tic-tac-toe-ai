@@ -1,5 +1,11 @@
 import React from "react";
-import { Button, Grid, makeStyles } from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  makeStyles,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import {
   Close as CloseIcon,
   RadioButtonUnchecked as CircleIcon,
@@ -13,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 150,
     borderRadius: 0,
     backgroundColor: "#fff",
+  },
+  // button style to be used for sm devices
+  buttonSm: {
+    minHeight: 100,
   },
   disabledButton: {},
   hightlightButton: {
@@ -35,9 +45,12 @@ const useStyles = makeStyles((theme) => ({
 
 export const BoardCell = (props) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const isSmDevice = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { cellIndex, handleClick } = props;
   const mark = useSelector((state) => state.game.board[cellIndex]);
+
   const hightlightNodes = useSelector((state) => state.game.highlightNodes);
   const shouldHighlight = hightlightNodes.includes(cellIndex);
 
@@ -56,6 +69,7 @@ export const BoardCell = (props) => {
         className={[
           classes.button,
           shouldHighlight ? classes.hightlightButton : undefined,
+          isSmDevice ? classes.buttonSm : undefined,
         ]}
         onClick={() => {
           if (!mark) {

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 
-import { BoardCell } from "../../components/BoardCell";
+import { BoardCell } from "../components/BoardCell";
 import { useDispatch, useSelector } from "react-redux";
-import { placeMark, aiMove, setCanPlay } from "../../app/gameSlice";
+import { placeMark, aiMove, setCanPlay } from "../app/gameSlice";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,23 +31,23 @@ const BoardRow = (props) => {
 export const Board = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  // used to control whether the player can place a chess
-  const [isWaiting, setIsWaiting] = useState(false);
+  const board = useSelector((state) => state.game.board);
+  const canPlay = useSelector((state) => state.game.canPlay);
 
   useEffect(() => {
-    dispatch(aiMove());
-  }, []);
+    if (board.every((mark) => !mark)) {
+      dispatch(aiMove());
+    }
+  }, [board]);
 
   const handleCellClick = (index) => {
-    if (isWaiting) {
+    if (!canPlay) {
       return;
     }
 
-    setIsWaiting(true);
     dispatch(placeMark(index));
     setTimeout(() => {
       dispatch(aiMove());
-      setIsWaiting(false);
     }, 1000);
   };
 
