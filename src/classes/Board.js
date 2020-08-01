@@ -28,21 +28,21 @@ export class Board {
       this.state[0] === this.state[2] &&
       this.state[0]
     ) {
-      return { winner: this.state[0], direction: "H", row: 1 };
+      return { winner: this.state[0], highlight: [0, 1, 2] };
     }
     if (
       this.state[3] === this.state[4] &&
       this.state[3] === this.state[5] &&
       this.state[3]
     ) {
-      return { winner: this.state[3], direction: "H", row: 2 };
+      return { winner: this.state[3], highlight: [3, 4, 5] };
     }
     if (
       this.state[6] === this.state[7] &&
       this.state[6] === this.state[8] &&
       this.state[6]
     ) {
-      return { winner: this.state[6], direction: "H", row: 3 };
+      return { winner: this.state[6], highlight: [6, 7, 8] };
     }
     // checking vertical wins
     if (
@@ -50,21 +50,21 @@ export class Board {
       this.state[0] === this.state[6] &&
       this.state[0]
     ) {
-      return { winner: this.state[0], direction: "V", row: 1 };
+      return { winner: this.state[0], highlight: [0, 3, 6] };
     }
     if (
       this.state[1] === this.state[4] &&
       this.state[1] === this.state[7] &&
       this.state[1]
     ) {
-      return { winner: this.state[1], direction: "V", row: 2 };
+      return { winner: this.state[1], highlight: [1, 4, 7] };
     }
     if (
       this.state[2] === this.state[5] &&
       this.state[2] === this.state[8] &&
       this.state[2]
     ) {
-      return { winner: this.state[2], direction: "V", row: 3 };
+      return { winner: this.state[2], highlight: [2, 5, 8] };
     }
     // check diagonal wins
     if (
@@ -72,14 +72,14 @@ export class Board {
       this.state[0] === this.state[8] &&
       this.state[0]
     ) {
-      return { winner: this.state[0], direction: "D", row: 1 };
+      return { winner: this.state[0], highlight: [0, 4, 8] };
     }
     if (
       this.state[2] === this.state[4] &&
       this.state[2] === this.state[6] &&
       this.state[2]
     ) {
-      return { winner: this.state[2], direction: "D", row: 2 };
+      return { winner: this.state[2], highlight: [2, 4, 6] };
     }
     // if no winner but the board is full, then it's a draw
     if (this.isFull()) {

@@ -1,6 +1,9 @@
 import React from "react";
 import { Button, Grid, makeStyles } from "@material-ui/core";
-import { Close as CloseIcon } from "@material-ui/icons";
+import {
+  Close as CloseIcon,
+  RadioButtonUnchecked as CircleIcon,
+} from "@material-ui/icons";
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -11,16 +14,20 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 0,
     backgroundColor: "#fff",
   },
-  circle: {
-    width: 42,
-    height: 42,
-    border: "solid",
-    borderWidth: 6,
-    borderColor: "#333",
-    borderRadius: "50%",
-    display: "inline-block",
+  disabledButton: {},
+  hightlightButton: {
+    backgroundColor: "#feffc4",
   },
-  close: {
+  // circle: {
+  //   width: 42,
+  //   height: 42,
+  //   border: "solid",
+  //   borderWidth: 6,
+  //   borderColor: "#333",
+  //   borderRadius: "50%",
+  //   display: "inline-block",
+  // },
+  icon: {
     width: 72,
     height: 72,
   },
@@ -31,12 +38,14 @@ export const BoardCell = (props) => {
 
   const { cellIndex, handleClick } = props;
   const mark = useSelector((state) => state.game.board[cellIndex]);
+  const hightlightNodes = useSelector((state) => state.game.highlightNodes);
+  const shouldHighlight = hightlightNodes.includes(cellIndex);
 
   const renderMark = () => {
     if (mark === "o") {
-      return <span className={classes.circle} />;
+      return <CircleIcon className={classes.icon} />;
     } else if (mark === "x") {
-      return <CloseIcon className={classes.close} />;
+      return <CloseIcon className={classes.icon} />;
     }
     return <></>;
   };
@@ -44,8 +53,15 @@ export const BoardCell = (props) => {
   return (
     <Grid item xs={4} {...props}>
       <Button
-        className={classes.button}
-        onClick={() => handleClick(cellIndex)}
+        className={[
+          classes.button,
+          shouldHighlight ? classes.hightlightButton : undefined,
+        ]}
+        onClick={() => {
+          if (!mark) {
+            handleClick(cellIndex);
+          }
+        }}
         disableElevation
       >
         {renderMark()}
