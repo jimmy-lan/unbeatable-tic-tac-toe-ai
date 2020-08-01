@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 
 import { BoardCell } from "../components/BoardCell";
 import { useDispatch, useSelector } from "react-redux";
-import { placeMark, aiMove, setCanPlay } from "../app/gameSlice";
+import { placeMark, aiMove } from "../app/gameSlice";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,9 +33,10 @@ export const Board = (props) => {
   const dispatch = useDispatch();
   const board = useSelector((state) => state.game.board);
   const canPlay = useSelector((state) => state.game.canPlay);
+  const isMaximizing = useSelector((state) => state.game.isMaximizing);
 
   useEffect(() => {
-    if (board.every((mark) => !mark)) {
+    if (board.every((mark) => !mark) && isMaximizing) {
       dispatch(aiMove());
     }
   }, [board]);

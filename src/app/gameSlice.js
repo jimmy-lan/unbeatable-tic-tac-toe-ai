@@ -10,6 +10,7 @@ const gameSlice = createSlice({
     canPlay: true,
     highlightNodes: [],
     gameComplete: false,
+    isMaximizing: true,
   },
   reducers: {
     placeMark(state, action) {
@@ -62,6 +63,9 @@ const gameSlice = createSlice({
     setCanPlay(state, action) {
       state.canPlay = action.payload;
     },
+    setMaximizing(state, action) {
+      state.isMaximizing = action.payload;
+    },
     resetBoard(state) {
       state.board = new Array(9).fill("");
       state.currentMark = "x";
@@ -74,5 +78,11 @@ const gameSlice = createSlice({
 
 const { actions, reducer } = gameSlice;
 
-export const { placeMark, aiMove, setCanPlay, resetBoard } = actions;
+export const {
+  placeMark,
+  aiMove,
+  setCanPlay,
+  setMaximizing,
+  resetBoard,
+} = actions;
 export default reducer;
