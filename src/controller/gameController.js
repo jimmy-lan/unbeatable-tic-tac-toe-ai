@@ -9,7 +9,9 @@ export const getAIPlayerMove = (boardArr, isMaximizing) => {
   }
 
   if (board.isEmpty()) {
-    return 4;
+    const bestMoves = [0, 2, 4, 6, 8];
+    const rnd = Math.floor(Math.random() * bestMoves.length);
+    return bestMoves[rnd];
   }
 
   const aiPlayer = new Player();

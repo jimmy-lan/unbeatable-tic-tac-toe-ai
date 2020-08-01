@@ -61,11 +61,10 @@ export class Player {
 
     if (depth === 0) {
       const bestMoves = this.nodesMap.get(bestValue);
-      // we select the first best move
-      // note that when we have multiple best moves, we can select any one
-      // of them
-      let move = bestMoves[0];
-      return move;
+      // when we have multiple best moves, we can select any
+      // one of them
+      const rnd = Math.floor(Math.random() * bestMoves.length);
+      return bestMoves[rnd];
     }
 
     return bestValue;
