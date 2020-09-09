@@ -1,3 +1,13 @@
+# Unbeatable Tic-Tac-Toe AI
+
+This project uses a minimax algorithm to calculate (and memoize) a decision tree for the computer to select the best strategy.
+It also includes a simple frontend page for human players to play with the AI.
+To play with the project, run `npm install` and `npm start` in the project directory.
+
+> **Important:** This project is made during leisure time and is not maintained.
+
+# React Information
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
