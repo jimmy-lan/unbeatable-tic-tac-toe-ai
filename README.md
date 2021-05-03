@@ -5,6 +5,7 @@ It also includes a simple frontend page for human players to play with.
 To setup the project, run `npm install` and `npm start` in the project directory.
 
 ![demo game tie](demo-tie.gif)
+
 ![demo game AI win](demo-ai-win.gif)
 
 > **Important:** This project is made during leisure time and is not maintained.
